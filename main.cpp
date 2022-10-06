@@ -18,6 +18,7 @@ sqlite3 *SQLiteHelper::db;
 int main(int argc, char *argv[]) {
     QApplication::setStyle(QStyleFactory::create("Fusion"));
     QApplication::setApplicationName(QString::fromStdString("Rent Manager"));
+    QApplication::setLayoutDirection(Qt::LayoutDirection::RightToLeft);
     QApplication a(argc, argv);
 
     SQLiteHelper::initDatabase();

@@ -9,16 +9,16 @@ ViewListPropertyItem::ViewListPropertyItem(PropertyObj *p) {
     setMaximumHeight(120);
     this->setLayout(layout);
 
-    lbl_name = new QLabel(QString::fromStdString("Renter name\n" + property->renter_name));
+    lbl_name = new QLabel(QString::fromStdString("اسم المستأجر\n" + property->renter_name));
     layout->addWidget(lbl_name);
 
-    lbl_building_number = new QLabel(QString::fromStdString("Building Number\n" + property->building_number));
+    lbl_building_number = new QLabel(QString::fromStdString("رقم المبني\n" + property->building_number));
     layout->addWidget(lbl_building_number);
 
-    lbl_floor = new QLabel(QString::fromStdString("Floor\n" + property->floor));
+    lbl_floor = new QLabel(QString::fromStdString("الدور\n" + property->floor));
     layout->addWidget(lbl_floor);
 
-    lbl_rent = new QLabel(QString::fromStdString("Rent\n" + std::to_string(property->rent)));
+    lbl_rent = new QLabel(QString::fromStdString("قيمة الايجار\n" + std::to_string(property->rent)));
     layout->addWidget(lbl_rent);
 
     buttons_box = new QWidget();
@@ -26,7 +26,7 @@ ViewListPropertyItem::ViewListPropertyItem(PropertyObj *p) {
     buttons_box_layout->setAlignment(Qt::AlignTop);
     buttons_box->setMaximumWidth(300);
 
-    btn_payment_history = new QPushButton(tr("Payment History"));
+    btn_payment_history = new QPushButton(tr("المدفوعات"));
     connect(btn_payment_history, &QPushButton::clicked, this, [this]() {
         auto history = Property::fetchPaymentHistory(property->id);
 
@@ -34,8 +34,8 @@ ViewListPropertyItem::ViewListPropertyItem(PropertyObj *p) {
         list->setSelectionMode(QAbstractItemView::NoSelection);
         std::unordered_map<std::string, std::string> title_value_map;
         for (auto entry: history) {
-            title_value_map["Date"] = entry->date;
-            title_value_map["Month"] = std::to_string(entry->month);
+            title_value_map["التاريخ"] = entry->date;
+            title_value_map["الشهر"] = std::to_string(entry->month);
 
             auto widget = new ViewListItemLabels(title_value_map);
 
@@ -60,11 +60,11 @@ ViewListPropertyItem::ViewListPropertyItem(PropertyObj *p) {
     });
     buttons_box_layout->addWidget(btn_payment_history);
 
-    btn_edit = new QPushButton(tr("Edit"));
+    btn_edit = new QPushButton(tr("تعديل"));
     connect(btn_edit, &QPushButton::clicked, this, &ViewListPropertyItem::edit);
     buttons_box_layout->addWidget(btn_edit);
 
-    btn_delete = new QPushButton(tr("Delete"));
+    btn_delete = new QPushButton(tr("حذف"));
     connect(btn_delete, &QPushButton::clicked, this, [this]() {
         Property::remove(property->id);
         onRemove();
@@ -100,4 +100,5 @@ void ViewListPropertyItem::edit() {
     dial->exec();
 
     delete dial;
+    onEdit();
 }

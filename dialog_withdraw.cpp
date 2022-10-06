@@ -1,13 +1,14 @@
 #include "dialog_withdraw.h"
 
 WithdrawDialog::WithdrawDialog(QWidget *parent) {
-    btn_withdraw = new QPushButton(tr("Withdraw"));
+    btn_withdraw = new QPushButton(tr("سحب"));
 
     buttons_box = new QDialogButtonBox(Qt::Horizontal);
     buttons_box->addButton(btn_withdraw, QDialogButtonBox::AcceptRole);
+    connect(buttons_box, &QDialogButtonBox::accepted, this, &WithdrawDialog::withdrawBtnClicked);
 
     buttons_box->addButton(QDialogButtonBox::Cancel);
-    connect(buttons_box, &QDialogButtonBox::accepted, this, &WithdrawDialog::withdrawBtnClicked);
+    buttons_box->buttons()[1]->setText("التراجع");
     connect(buttons_box, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
 
@@ -20,11 +21,11 @@ WithdrawDialog::WithdrawDialog(QWidget *parent) {
     connect(combobox_landlords, &QComboBox::currentIndexChanged, this, &WithdrawDialog::selectedLandlordChanged);
 
     if (landlords.empty())
-        lbl_balance = new QLabel(QString::fromStdString("Balance: "));
+        lbl_balance = new QLabel(QString::fromStdString("الرصيد: "));
     else
-        lbl_balance = new QLabel(QString::fromStdString("Balance: " + std::to_string(landlords[0]->balance)));
+        lbl_balance = new QLabel(QString::fromStdString("الرصيد: " + std::to_string(landlords[0]->balance)));
 
-    field_amount = new LabeledTextField(nullptr, "Amount: ");
+    field_amount = new LabeledTextField(nullptr, "المقدار: ");
     field_amount->field->setValidator(new QIntValidator);
 
     layout = new QVBoxLayout();
@@ -43,7 +44,7 @@ void WithdrawDialog::withdrawBtnClicked() {
 
     auto landlord = landlords[selected_idx];
     if (amount <= 0) {
-        MessagesHelper::showMessageBox("Invalid Amount", "The selected amount can't be withdrawn");
+        MessagesHelper::showMessageBox("كمية غير صالحة", "لا يمكن سحب هذه الكمية");
         return;
     }
 
@@ -52,7 +53,7 @@ void WithdrawDialog::withdrawBtnClicked() {
 }
 
 void WithdrawDialog::selectedLandlordChanged(int idx) {
-    lbl_balance->setText(QString::fromStdString("Balance: " + std::to_string(landlords[idx]->balance)));
+    lbl_balance->setText(QString::fromStdString("الرصيد: " + std::to_string(landlords[idx]->balance)));
 }
 
 WithdrawDialog::~WithdrawDialog() {

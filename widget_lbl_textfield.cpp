@@ -8,6 +8,7 @@ LabeledTextField::LabeledTextField(QWidget *parent, std::string title) : QWidget
 
     auto *layout = new QHBoxLayout();
     this->setLayout(layout);
+    // layout->setDirection(QBoxLayout::RightToLeft);
 
     layout->addWidget(lbl);
     layout->addWidget(field);

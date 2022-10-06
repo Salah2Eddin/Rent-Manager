@@ -2,22 +2,23 @@
 
 
 AddPropertyDialog::AddPropertyDialog(QWidget *parent) {
-    btn_add = new QPushButton(tr("Add"));
-
     buttons_box = new QDialogButtonBox(Qt::Horizontal);
+
+    btn_add = new QPushButton(tr("اضافة"));
     buttons_box->addButton(btn_add, QDialogButtonBox::AcceptRole);
+    connect(buttons_box, &QDialogButtonBox::accepted, this, &AddPropertyDialog::addBtnClicked);
 
     buttons_box->addButton(QDialogButtonBox::Cancel);
-    connect(buttons_box, &QDialogButtonBox::accepted, this, &AddPropertyDialog::addBtnClicked);
+    buttons_box->buttons()[1]->setText("التراجع");
     connect(buttons_box, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
-    field_renter_name = new LabeledTextField(nullptr, "Renter name:");
+    field_renter_name = new LabeledTextField(nullptr, "اسم المستأجر:");
 
-    field_building_number = new LabeledTextField(nullptr, "Building Number:");
+    field_building_number = new LabeledTextField(nullptr, "رقم المبني:");
 
-    field_floor_number = new LabeledTextField(nullptr, "Floor Number:");
+    field_floor_number = new LabeledTextField(nullptr, "الدور:");
 
-    field_rent = new LabeledTextField(nullptr, "Rent:");
+    field_rent = new LabeledTextField(nullptr, "الايجار:");
     field_rent->field->setValidator(new QIntValidator);
 
     list_landlords = new QListWidget();
@@ -66,13 +67,16 @@ void AddPropertyDialog::addBtnClicked() {
     }
 
     if (name.empty() || b_num.empty() || f_num.empty() || r == 0) {
-        MessagesHelper::showMessageBox("Missing data", "You didn't fill all fields");
+        MessagesHelper::showMessageBox("البيانات ناقصة", "لم تملأ جميع البيانات");
+        return;
+    }else if (r<0) {
+        MessagesHelper::showMessageBox("الايجار غير صالح", "قيمة الايجار غير صالحة");
         return;
     } else if (selected_landlords.empty()) {
-        MessagesHelper::showMessageBox("Missing landlords", "You didn't select any landlords for this property");
+        MessagesHelper::showMessageBox("لا يوجد مُلاك", "لم تختر اي ملاك لهذا العقار");
         return;
     } else if (sum != 100) {
-        MessagesHelper::showMessageBox("Invalid shares", "Total sum of shares is not 100%");
+        MessagesHelper::showMessageBox("النسب خاطئة", "مجموع نسب الايجار لا يساوي 100%");
         return;
     }
 

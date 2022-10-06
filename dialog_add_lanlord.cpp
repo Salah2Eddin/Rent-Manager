@@ -2,16 +2,17 @@
 #include "landlord.h"
 
 AddLandlordDialog::AddLandlordDialog(QWidget *parent) : QDialog(parent) {
-    btn_add = new QPushButton(tr("Add"));
-
     buttons_box = new QDialogButtonBox(Qt::Horizontal);
+
+    btn_add = new QPushButton(tr("اضافة"));
     buttons_box->addButton(btn_add, QDialogButtonBox::AcceptRole);
+    connect(buttons_box, &QDialogButtonBox::accepted, this, &AddLandlordDialog::addBtnClicked);
 
     buttons_box->addButton(QDialogButtonBox::Cancel);
-    connect(buttons_box, &QDialogButtonBox::accepted, this, &AddLandlordDialog::addBtnClicked);
+    buttons_box->buttons()[1]->setText("التراجع");
     connect(buttons_box, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
-    field_name = new LabeledTextField(nullptr, "Name:");
+    field_name = new LabeledTextField(nullptr, "الاسم:");
 
     layout = new QVBoxLayout();
     this->setLayout(layout);
@@ -28,7 +29,7 @@ void AddLandlordDialog::addBtnClicked() {
         QDialog::close();
     }
     else {
-        MessagesHelper::showMessageBox("Missing data", "You didn't fill all fields");
+        MessagesHelper::showMessageBox("البيانات ناقصة", "لم تملأ جميع البيانات");
         return;
     }
 }

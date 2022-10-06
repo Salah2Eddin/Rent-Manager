@@ -6,18 +6,19 @@ EditPropertyDialog::EditPropertyDialog(PropertyObj *prop, QWidget *parent) {
 
     buttons_box = new QDialogButtonBox(Qt::Horizontal);
 
-    btn_add = new QPushButton(tr("Edit"));
+    btn_add = new QPushButton(tr("حفظ التعديلات"));
     connect(buttons_box, &QDialogButtonBox::accepted, this, &EditPropertyDialog::editBtnClicked);
     buttons_box->addButton(btn_add, QDialogButtonBox::AcceptRole);
 
     buttons_box->addButton(QDialogButtonBox::Cancel);
+    buttons_box->buttons()[1]->setText("التراجع");
     connect(buttons_box, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
-    lbl_renter_name = new QLabel(QString::fromStdString("Renter name: " + property->renter_name));
-    lbl_building_number = new QLabel(QString::fromStdString("Building Number: " + property->building_number));
-    lbl_floor_number = new QLabel(QString::fromStdString("Floor Number: " + property->floor));
+    lbl_renter_name = new QLabel(QString::fromStdString("اسم المستأجر: " + property->renter_name));
+    lbl_building_number = new QLabel(QString::fromStdString("رقم المبني: " + property->building_number));
+    lbl_floor_number = new QLabel(QString::fromStdString("الدور: " + property->floor));
 
-    field_rent = new LabeledTextField(nullptr, "Rent:");
+    field_rent = new LabeledTextField(nullptr, "الايجار:");
     field_rent->field->setValidator(new QIntValidator);
     field_rent->field->setText(QString::fromStdString(std::to_string(property->rent)));
 
@@ -83,13 +84,16 @@ void EditPropertyDialog::editBtnClicked() {
     }
 
     if (new_rent <= 0) {
-        MessagesHelper::showMessageBox("Invalid edit", "Invalid new rent");
+        MessagesHelper::showMessageBox("تعديل مرفوض", "قيمة الايجار الجديدة غير صالحة");
+        return;
+    } else if (new_rent < 0) {
+        MessagesHelper::showMessageBox("الايجار غير صالح", "قيمة الايجار غير صالحة");
         return;
     } else if (selected_landlords.empty()) {
-        MessagesHelper::showMessageBox("Invalid edit", "You didn't select any landlords for this property");
+        MessagesHelper::showMessageBox("تعديل مرفوض", "لم تختار ملاك لهذا العقار");
         return;
     } else if (sum != 100) {
-        MessagesHelper::showMessageBox("Invalid edit", "Total sum of shares is not 100%");
+        MessagesHelper::showMessageBox("تعديل مرفوض", "مجموع النسب لا يساوي 100%");
         return;
     }
 

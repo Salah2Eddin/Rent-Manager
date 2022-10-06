@@ -6,31 +6,31 @@ MainWindow::MainWindow() {
 
     buttons_box = new QWidget();
 
-    btn_add_landlord = new QPushButton(tr("Add Landlord"));
+    btn_add_landlord = new QPushButton(tr("أضافة مالك"));
     connect(btn_add_landlord, &QPushButton::clicked, this, &MainWindow::addLandlordDialog);
 
-    btn_add_property = new QPushButton(tr("Add Property"));
+    btn_add_property = new QPushButton(tr("أضافة عقار"));
     connect(btn_add_property, &QPushButton::clicked, this, &MainWindow::addPropertyDialog);
 
-    btn_pay_rent = new QPushButton(tr("Pay rent"));
+    btn_pay_rent = new QPushButton(tr("دفع الايجار"));
     connect(btn_pay_rent, &QPushButton::clicked, this, &MainWindow::payRentDialog);
 
-    btn_withdraw = new QPushButton(tr("Withdraw"));
+    btn_withdraw = new QPushButton(tr("سحب"));
     connect(btn_withdraw, &QPushButton::clicked, this, &MainWindow::withdrawMoneyDialog);
 
-    btn_landlords_view = new QPushButton(tr("Landlords View"));
+    btn_landlords_view = new QPushButton(tr("المُلاك"));
     connect(btn_landlords_view, &QPushButton::clicked, this, &MainWindow::landlordsView);
 
-    btn_properties_view = new QPushButton(tr("Properties View"));
+    btn_properties_view = new QPushButton(tr("العقارات"));
     connect(btn_properties_view, &QPushButton::clicked, this, &MainWindow::propertiesView);
 
-    btn_deposit_view = new QPushButton(tr("Deposit History View"));
+    btn_deposit_view = new QPushButton(tr("الايداعات"));
     connect(btn_deposit_view, &QPushButton::clicked, this, &MainWindow::depositHistoryView);
 
-    btn_withdrawal_view = new QPushButton(tr("Withdrawal History View"));
+    btn_withdrawal_view = new QPushButton(tr("السحب"));
     connect(btn_withdrawal_view, &QPushButton::clicked, this, &MainWindow::withdrawalHistoryView);
 
-    btn_payment_view = new QPushButton(tr("Payment History View"));
+    btn_payment_view = new QPushButton(tr("المدفوعات"));
     connect(btn_payment_view, &QPushButton::clicked, this, &MainWindow::paymentHistoryView);
 
     buttons_box_layout = new QVBoxLayout();
@@ -54,8 +54,8 @@ MainWindow::MainWindow() {
 
     central_layout = new QHBoxLayout();
     central->setLayout(central_layout);
-    central_layout->addWidget(view_list);
     central_layout->addWidget(buttons_box);
+    central_layout->addWidget(view_list);
 
     current_view = 0;
     updateCurrentView();
@@ -137,6 +137,7 @@ void MainWindow::propertiesView() {
         auto list_item = new QListWidgetItem();
         list_item->setSizeHint(property_item->size());
 
+        property_item->onEdit = [this]() { updateCurrentView(); };
         property_item->onRemove = [this]() { updateCurrentView(); };
 
         view_list->addItem(list_item);
@@ -156,10 +157,10 @@ void MainWindow::depositHistoryView() {
     auto history = Landlord::fetchDepositHistory();
     std::unordered_map<std::string, std::string> mp;
     for (auto *entry: history) {
-        mp["Source"] = entry->source;
-        mp["Amount"] = std::to_string(entry->amount);
-        mp["Date"] = entry->date;
-        mp["Receiver"] = id_name[entry->receiver_id];
+        mp["المصدر"] = entry->source;
+        mp["المقدار"] = std::to_string(entry->amount);
+        mp["التاريخ"] = entry->date;
+        mp["المستلم"] = id_name[entry->receiver_id];
 
         auto property_item = new ViewListItemLabels(mp);
         auto list_item = new QListWidgetItem();
@@ -182,9 +183,9 @@ void MainWindow::withdrawalHistoryView() {
     auto history = Landlord::fetchWithdrawalHistory();
     std::unordered_map<std::string, std::string> mp;
     for (auto *entry: history) {
-        mp["Amount"] = std::to_string(entry->amount);
-        mp["Date"] = entry->date;
-        mp["Receiver"] = id_name[entry->receiver_id];
+        mp["المقدار"] = std::to_string(entry->amount);
+        mp["التاريخ"] = entry->date;
+        mp["المستلم"] = id_name[entry->receiver_id];
 
         auto property_item = new ViewListItemLabels(mp);
         auto list_item = new QListWidgetItem();
@@ -207,9 +208,9 @@ void MainWindow::paymentHistoryView() {
     auto history = Property::fetchPaymentHistory();
     std::unordered_map<std::string, std::string> mp;
     for (auto *entry: history) {
-        mp["Month"] = std::to_string(entry->month);
-        mp["Date"] = entry->date;
-        mp["Property"] = id_name[entry->payer_id];
+        mp["الشهر"] = std::to_string(entry->month);
+        mp["التاريخ"] = entry->date;
+        mp["العقار"] = id_name[entry->payer_id];
 
         auto property_item = new ViewListItemLabels(mp);
         auto list_item = new QListWidgetItem();
@@ -239,7 +240,7 @@ void MainWindow::updateCurrentView() {
             withdrawalHistoryView();
             break;
         }
-        case 4:{
+        case 4: {
             paymentHistoryView();
             break;
         }

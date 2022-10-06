@@ -22,7 +22,7 @@ public:
     ~ViewListPropertyItem() override;
 
     PropertyObj *property;
-    std::function<void()> onRemove;
+    std::function<void()> onRemove, onEdit;
 
     void edit();
 

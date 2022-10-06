@@ -10,10 +10,10 @@ ViewListLandlordItem::ViewListLandlordItem(LandlordObj *l) {
 
     setMaximumHeight(120);
 
-    lbl_name = new QLabel(QString::fromStdString("Name\n" + landlord->name));
+    lbl_name = new QLabel(QString::fromStdString("الاسم\n" + landlord->name));
     layout->addWidget(lbl_name);
 
-    lbl_balance = new QLabel(QString::fromStdString("Balance\n" + std::to_string(landlord->balance)));
+    lbl_balance = new QLabel(QString::fromStdString("الرصيد\n" + std::to_string(landlord->balance)));
     layout->addWidget(lbl_balance);
 
     buttons_box = new QWidget();
@@ -22,7 +22,7 @@ ViewListLandlordItem::ViewListLandlordItem(LandlordObj *l) {
     buttons_box->setMaximumWidth(300);
     buttons_box->setLayout(buttons_box_layout);
 
-    btn_withdrawal_history = new QPushButton(tr("Withdrawal History"));
+    btn_withdrawal_history = new QPushButton(tr("السحب"));
     connect(btn_withdrawal_history, &QPushButton::clicked, this, [&]() {
         auto history = Landlord::fetchWithdrawalHistory(landlord->id);
 
@@ -30,8 +30,8 @@ ViewListLandlordItem::ViewListLandlordItem(LandlordObj *l) {
         list->setSelectionMode(QAbstractItemView::NoSelection);
         std::unordered_map<std::string, std::string> title_value_map;
         for (auto entry: history) {
-            title_value_map["Date"] = entry->date;
-            title_value_map["Amount"] = std::to_string(entry->amount);
+            title_value_map["التاريخ"] = entry->date;
+            title_value_map["المقدار"] = std::to_string(entry->amount);
 
             auto widget = new ViewListItemLabels(title_value_map);
 
@@ -56,7 +56,7 @@ ViewListLandlordItem::ViewListLandlordItem(LandlordObj *l) {
     });
     buttons_box_layout->addWidget(btn_withdrawal_history);
 
-    btn_deposit_history = new QPushButton(tr("Deposit History"));
+    btn_deposit_history = new QPushButton(tr("الايداعات"));
     connect(btn_deposit_history, &QPushButton::clicked, this, [&]() {
         auto history = Landlord::fetchDepositHistory(landlord->id);
 
@@ -64,9 +64,9 @@ ViewListLandlordItem::ViewListLandlordItem(LandlordObj *l) {
         list->setSelectionMode(QAbstractItemView::NoSelection);
         std::unordered_map<std::string, std::string> title_value_map;
         for (auto entry: history) {
-            title_value_map["Source"] = entry->source;
-            title_value_map["Date"] = entry->date;
-            title_value_map["Amount"] = std::to_string(entry->amount);
+            title_value_map["المصدر"] = entry->source;
+            title_value_map["التاريخ"] = entry->date;
+            title_value_map["المقدار"] = std::to_string(entry->amount);
 
             auto widget = new ViewListItemLabels(title_value_map);
 
@@ -91,7 +91,7 @@ ViewListLandlordItem::ViewListLandlordItem(LandlordObj *l) {
     });
     buttons_box_layout->addWidget(btn_deposit_history);
 
-    btn_delete = new QPushButton(tr("Delete"));
+    btn_delete = new QPushButton(tr("حذف"));
     connect(btn_delete, &QPushButton::clicked, this, [this]() {
         Landlord::remove(landlord->id);
         onRemove();

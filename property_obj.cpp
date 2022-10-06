@@ -155,7 +155,7 @@ void PropertyObj::payRent(int month) const {
 
     for (auto &landlord: landlords) {
         double amount = (double) landlord.second / 100 * rent;
-        landlord.first->deposit(amount, renter_name + " Month: " + std::to_string(month));
+        landlord.first->deposit(amount, renter_name + "- ايجار شهر: " + std::to_string(month));
     }
 
     for (int i = landlords.size() - 1; i >= 0; --i) {

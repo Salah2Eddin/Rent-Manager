@@ -4,7 +4,7 @@ LandlordListItem::LandlordListItem(LandlordObj *landlord, QWidget *parent):landl
     id = new int(landlord->id);
     name = new std::string(landlord->name);
 
-    setMaximumSize(200, 50);
+    setMaximumHeight(50);
     setMinimumSize(200, 50);
 
     check_box = new QCheckBox();
@@ -18,10 +18,11 @@ LandlordListItem::LandlordListItem(LandlordObj *landlord, QWidget *parent):landl
 
     layout = new QHBoxLayout();
     this->setLayout(layout);
+    // layout->setDirection(QBoxLayout::RightToLeft);
 
     layout->addWidget(check_box);
     layout->addWidget(name_lbl);
-    layout->addWidget(share_field, Qt::AlignRight);
+    layout->addWidget(share_field, Qt::AlignLeft);
 }
 
 LandlordListItem::~LandlordListItem() {
