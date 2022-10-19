@@ -155,14 +155,15 @@ void MainWindow::depositHistoryView() {
         id_name[landlord->id] = landlord->name;
 
     auto history = Landlord::fetchDepositHistory();
-    std::unordered_map<std::string, std::string> mp;
+    std::unordered_map<std::string, std::string> title_value_map;
     for (auto *entry: history) {
-        mp["المصدر"] = entry->source;
-        mp["المقدار"] = std::to_string(entry->amount);
-        mp["التاريخ"] = entry->date;
-        mp["المستلم"] = id_name[entry->receiver_id];
+        title_value_map["ملاحظة"] = "";
+        title_value_map["المصدر"] = entry->source;
+        title_value_map["المقدار"] = std::to_string(entry->amount);
+        title_value_map["التاريخ"] = entry->date;
+        title_value_map["المستلم"] = id_name[entry->receiver_id];
 
-        auto property_item = new ViewListItemLabels(mp);
+        auto property_item = new ViewListItemLabels(title_value_map);
         auto list_item = new QListWidgetItem();
         list_item->setSizeHint(property_item->size());
 
@@ -181,13 +182,14 @@ void MainWindow::withdrawalHistoryView() {
         id_name[landlord->id] = landlord->name;
 
     auto history = Landlord::fetchWithdrawalHistory();
-    std::unordered_map<std::string, std::string> mp;
+    std::unordered_map<std::string, std::string> title_value_map;
     for (auto *entry: history) {
-        mp["المقدار"] = std::to_string(entry->amount);
-        mp["التاريخ"] = entry->date;
-        mp["المستلم"] = id_name[entry->receiver_id];
+        title_value_map["ملاحظة"] = "";
+        title_value_map["المقدار"] = std::to_string(entry->amount);
+        title_value_map["التاريخ"] = entry->date;
+        title_value_map["المستلم"] = id_name[entry->receiver_id];
 
-        auto property_item = new ViewListItemLabels(mp);
+        auto property_item = new ViewListItemLabels(title_value_map);
         auto list_item = new QListWidgetItem();
         list_item->setSizeHint(property_item->size());
 
@@ -206,13 +208,14 @@ void MainWindow::paymentHistoryView() {
         id_name[property->id] = property->renter_name;
 
     auto history = Property::fetchPaymentHistory();
-    std::unordered_map<std::string, std::string> mp;
+    std::unordered_map<std::string, std::string> title_value_map;
     for (auto *entry: history) {
-        mp["الشهر"] = std::to_string(entry->month);
-        mp["التاريخ"] = entry->date;
-        mp["العقار"] = id_name[entry->payer_id];
+        title_value_map["ملاحظة"] = "";
+        title_value_map["الشهر"] = std::to_string(entry->month);
+        title_value_map["التاريخ"] = entry->date;
+        title_value_map["العقار"] = id_name[entry->payer_id];
 
-        auto property_item = new ViewListItemLabels(mp);
+        auto property_item = new ViewListItemLabels(title_value_map);
         auto list_item = new QListWidgetItem();
         list_item->setSizeHint(property_item->size());
 

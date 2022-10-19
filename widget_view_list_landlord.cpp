@@ -30,6 +30,7 @@ ViewListLandlordItem::ViewListLandlordItem(LandlordObj *l) {
         list->setSelectionMode(QAbstractItemView::NoSelection);
         std::unordered_map<std::string, std::string> title_value_map;
         for (auto entry: history) {
+            title_value_map["ملاحظة"] = "";
             title_value_map["التاريخ"] = entry->date;
             title_value_map["المقدار"] = std::to_string(entry->amount);
 
@@ -48,7 +49,7 @@ ViewListLandlordItem::ViewListLandlordItem(LandlordObj *l) {
         dial->layout()->addWidget(list);
         dial->exec();
 
-        for(auto ptr: history)
+        for (auto ptr: history)
             delete ptr;
         delete list;
         delete dial_layout;
@@ -83,7 +84,7 @@ ViewListLandlordItem::ViewListLandlordItem(LandlordObj *l) {
         dial->layout()->addWidget(list);
         dial->exec();
 
-        for(auto ptr: history)
+        for (auto ptr: history)
             delete ptr;
         delete list;
         delete dial_layout;

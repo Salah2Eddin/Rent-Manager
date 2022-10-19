@@ -34,6 +34,7 @@ ViewListPropertyItem::ViewListPropertyItem(PropertyObj *p) {
         list->setSelectionMode(QAbstractItemView::NoSelection);
         std::unordered_map<std::string, std::string> title_value_map;
         for (auto entry: history) {
+            title_value_map["ملاحظة"] = "";
             title_value_map["التاريخ"] = entry->date;
             title_value_map["الشهر"] = std::to_string(entry->month);
 
@@ -52,7 +53,7 @@ ViewListPropertyItem::ViewListPropertyItem(PropertyObj *p) {
         dial->layout()->addWidget(list);
         dial->exec();
 
-        for(auto ptr: history)
+        for (auto ptr: history)
             delete ptr;
         delete list;
         delete dial_layout;
