@@ -34,6 +34,7 @@ ViewListPropertyItem::ViewListPropertyItem(PropertyObj *p) {
         list->setSelectionMode(QAbstractItemView::NoSelection);
         std::unordered_map<std::string, std::string> title_value_map;
         for (auto entry: history) {
+            title_value_map["Note"] = " ";
             title_value_map["Date"] = entry->date;
             title_value_map["Month"] = std::to_string(entry->month);
 

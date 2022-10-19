@@ -30,6 +30,7 @@ ViewListLandlordItem::ViewListLandlordItem(LandlordObj *l) {
         list->setSelectionMode(QAbstractItemView::NoSelection);
         std::unordered_map<std::string, std::string> title_value_map;
         for (auto entry: history) {
+            title_value_map["Note"] = " ";
             title_value_map["Date"] = entry->date;
             title_value_map["Amount"] = std::to_string(entry->amount);
 
